@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Mídia — ADECIN Nova Jerusalém{% endblock %}
+
+{% block content %}
+
+  <header class="midia-head m-wrap">
+    <h1 class="midia-head__title">Mídia</h1>
+    <p class="midia-head__lead">
+      Cada culto, cada encontro — guardado aqui.
+      Abra um álbum para ver o vídeo e as fotos.
+    </p>
+  </header>
+
+  <div class="m-wrap">
+
+    <ul class="album-grid">
+      {% for album in albuns %}
+        <li class="album-card">
+          <a class="album-card__link" href="{% url 'album' album.id %}">
+            <div class="album-card__media">
+              <img src="{{ album.capa.url }}" alt="Capa do álbum {{ album.nome }}" loading="lazy">
+              <span class="album-card__badge" aria-hidden="true">
+                <svg viewBox="0 0 10 12" fill="currentColor"><path d="M0 0l10 6-10 6z"/></svg>
+              </span>
+            </div>
+            <div class="album-card__body">
+              <p class="m-eyebrow">{{ album.data }}</p>
+              <h2 class="album-card__title">{{ album.nome }}</h2>
+              <p class="album-card__meta">{{ album.quantidade_fotos }} Fotos</p>
+            </div>
+          </a>
+        </li>
+      {% empty %}
+        <li class="album-empty">Nenhum álbum publicado ainda.</li>
+      {% endfor %}
+    </ul>
+
+  </div>
+
+{% endblock %}

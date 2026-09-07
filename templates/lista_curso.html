@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Cursos e treinamentos — ADECIN Nova Jerusalém{% endblock %}
+
+{% block content %}
+
+  <main class="cursos">
+
+    <header class="cursos__cabecalho">
+      <h1 class="cursos__titulo">Cursos e treinamentos</h1>
+      <p class="cursos__descricao">Conteúdo em vídeo aberto para os membros. Escolha um curso para começar.</p>
+    </header>
+
+    <ul class="cursos__lista">
+      {% for curso in cursos %}
+        <li>
+          <a class="curso__link {% if not curso.liberado %}curso__link--trancado{% endif %}"
+             href="{% url 'curso' curso.slug %}">
+
+            <span class="curso__capa-area">
+              <img class="curso__capa" src="{{ curso.capa.url }}" alt="">
+
+              {% if not curso.liberado %}
+                <span class="curso__cadeado" aria-hidden="true">
+                  <svg viewBox="0 0 24 24">
+                    <rect x="5" y="11" width="14" height="10" rx="2"/>
+                    <path d="M8 11V7a4 4 0 0 1 8 0v4"/>
+                  </svg>
+                </span>
+              {% endif %}
+            </span>
+
+            <span class="curso__conteudo">
+              <span class="curso__nome">
+                {{ curso.curso }}
+                {% if not curso.liberado %}
+                  <span class="sr-apenas">— acesso restrito</span>
+                {% endif %}
+              </span>
+              <span class="curso__resumo">{{ curso.resumo }}</span>
+              <span class="curso__meta">{{ curso.quantidade_aulas }} aulas</span>
+            </span>
+
+          </a>
+        </li>
+      {% empty %}
+        <li class="cursos__vazio">Nenhum curso publicado ainda.</li>
+      {% endfor %}
+    </ul>
+
+  </main>
+
+{% endblock %}

@@ -1,0 +1,54 @@
+{% load static %}
+
+<section class="mural" role="region" aria-roledescription="carrossel" aria-label="Anúncios da igreja" tabindex="0">
+
+  {% if anuncios %}
+
+    <div class="mural__trilho">
+      {% for anuncio in anuncios %}
+        <div class="mural__slide"
+             role="group"
+             aria-roledescription="slide"
+             aria-label="{{ forloop.counter }} de {{ anuncios|length }}">
+
+          {% if anuncio.link %}<a class="mural__link" href="{{ anuncio.link }}">{% endif %}
+
+            <img src="{{ anuncio.imagem.url }}"
+                 alt="{{ anuncio.titulo }}"
+                 {% if forloop.first %}loading="eager" fetchpriority="high"{% else %}loading="lazy"{% endif %}>
+
+          {% if anuncio.link %}</a>{% endif %}
+
+        </div>
+      {% endfor %}
+    </div>
+
+    <button class="mural__seta mural__seta--ant" type="button" aria-label="Anúncio anterior">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+        <path d="M10 3L5 8l5 5"/>
+      </svg>
+    </button>
+
+    <button class="mural__seta mural__seta--prox" type="button" aria-label="Próximo anúncio">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+        <path d="M6 3l5 5-5 5"/>
+      </svg>
+    </button>
+
+    <div class="mural__pontos">
+      {% for anuncio in anuncios %}
+        <button class="mural__ponto" type="button" aria-label="Ir para o anúncio {{ forloop.counter }}"></button>
+      {% endfor %}
+    </div>
+
+  {% else %}
+    <p class="mural__vazio">Nenhum anúncio publicado no momento</p>
+  {% endif %}
+
+</section>
+
+<div class="faixa">
+  <div class="wrap">
+    <p class="faixa__lema">Aqui é o seu lugar</p>
+  </div>
+</div>

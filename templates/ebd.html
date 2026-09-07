@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Escola Bíblica Dominical — ADECIN Nova Jerusalém{% endblock %}
+
+{% block content %}
+
+<main class="content">
+
+  <!-- ============ TEMA DO TRIMESTRE ============ -->
+  <section id="tema" class="reveal">
+    <span class="eyebrow">Escola Bíblica Dominical</span>
+    <h2>O que estamos estudando</h2>
+    <p>
+      A cada trimestre a igreja inteira estuda o mesmo livro da Bíblia.
+      Cada turma percorre o texto no seu próprio ritmo e com a sua própria
+      linguagem — mas todo mundo caminha junto.
+    </p>
+
+    {% if tema %}
+      <article class="tema-card">
+        <div class="tema-card__livro">{{ tema.livro }}</div>
+        <span class="tema-card__ref">{{ tema.subtitulo }}</span>
+
+        <p>{{ tema.introducao }}</p>
+
+        <span class="tema-card__periodo">{{ tema.periodo }}</span>
+      </article>
+    {% else %}
+      <p class="vazio">
+        O novo trimestre ainda não foi publicado. Em breve o conteúdo será atualizado por aqui.
+      </p>
+    {% endif %}
+  </section>
+
+  <!-- ============ TURMAS ============ -->
+  <section id="licoes" class="reveal">
+    <h2>Nossas turmas</h2>
+    <div class="licoes-list">
+      {% for turma in turmas %}
+        <article class="licao-item">
+      <div class="licao-turma">{{ turma.nome }}</div>
+      <div class="licao-info">
+        <p>{{ turma.descricao }}</p>
+
+          {% if turma.material and user.is_authenticated %}
+            <a class="material-botao" href="{% url 'material_turma' turma.id %}"
+              target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/>
+              <path d="M14 3v5h5"/>
+              <path d="M12 12v5M9.5 14.5 12 12l2.5 2.5"/>
+            </svg>
+            Material da Turma
+            <span class="material-botao__ext">PDF</span>
+          </a>
+        {% endif %}
+
+      </div>
+    </article>
+      {% empty %}
+        <p class="vazio">As turmas deste trimestre ainda não foram publicadas.</p>
+      {% endfor %}
+    </div>
+  </section>
+
+</main>
+{% endblock %}

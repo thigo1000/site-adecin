@@ -1,0 +1,43 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{% block title %}ADECIN Nova Jerusalém{% endblock %}</title>
+    <meta name="description" content="{% block description %}Aqui é o seu lugar — cultos, agenda, Escola Bíblica Dominical e galeria de fotos e vídeos.{% endblock %}">
+
+    <link rel="icon" href="{% static 'imagem/logo/logo-simbolo-verde.png' %}">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=EB+Garamond:wght@400;500;600&family=Kaushan+Script&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="{% static 'styles/styles.css' %}">
+    {% block extra_css %}{% endblock %}
+ 
+</head>
+
+<body>
+
+    {% include 'partials/_nav.html' %}
+
+    {% for message in messages %}
+        <p class="alerta">{{ message }}</p>
+    {% endfor %}
+
+    {% block mural %}{% endblock %}
+
+    {% block content %}{% endblock %}
+
+    {% include 'partials/_footer.html' %}
+
+    <script src="{% static 'js/site.js' %}" defer></script>
+
+</body>
+
+</html>

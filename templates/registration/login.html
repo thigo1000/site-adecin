@@ -1,0 +1,34 @@
+{% extends 'usuario/base_usuario.html' %}
+{% block title %}Entrar — ADECIN Nova Jerusalém{% endblock %}
+
+{% block conteudo %}
+<main class="acesso">
+  <div class="acesso__caixa">
+
+    <section class="cartao">
+
+      <h1 class="cartao__titulo">Entrar</h1>
+      <p class="cartao__texto">Acesse a área de membros com seu usuário e a senha que você criou.</p>
+
+      <form method="post" novalidate>
+
+        {% csrf_token %}
+        <input type="hidden" name="next" value="{{ request.GET.next }}">
+
+        {% for erro in form.non_field_errors %}
+            <p class="erro-form">{{ erro }}</p>
+        {% endfor %}
+        {% include 'usuario/campo.html' %}
+
+        <button class="botao" type="submit">Entrar</button>
+
+      </form>
+
+      <p class="rodape-cartao"><a href="{% url 'password_reset' %}">Esqueci minha senha</a></p>
+      <p class="rodape-cartao">Primeiro acesso? <a href="{% url 'verificador' %}">Ativar meu cadastro</a></p>
+
+    </section>
+
+  </div>
+</main>
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends 'usuario/base_usuario.html' %}
+{% block title %}Criar acesso — ADECIN Nova Jerusalém{% endblock %}
+
+{% block conteudo %}
+
+<main class="acesso">
+  <div class="acesso__caixa">
+
+    <p class="passo">Etapa 2 de 2 <span class="passo__traco"></span></p>
+
+    <section class="cartao">
+
+      <h1 class="cartao__titulo">Criar seu acesso</h1>
+      <p class="cartao__texto">Encontramos seu cadastro. Falta só escolher como você quer ser chamado e definir sua senha.</p>
+
+      <div class="encontrado">
+        <span class="encontrado__selo" aria-hidden="true">&check;</span>
+        <span class="encontrado__rotulo">Cadastro encontrado</span>
+      </div>
+
+      <form method="post" novalidate>
+        {% csrf_token %}
+        
+        {% include 'usuario/campo.html' %}
+
+        <ul class="dicas">
+          <li>Pelo menos 8 caracteres</li>
+          <li>Não use só números</li>
+        </ul>
+
+        <button class="botao" type="submit">Criar acesso</button>
+
+      </form>
+
+      <p class="rodape-cartao">Não é você? <a href="{% url 'verificador' %}">Voltar</a></p>
+
+    </section>
+
+  </div>
+</main>
+{% endblock %}

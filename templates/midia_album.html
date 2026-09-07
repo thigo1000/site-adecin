@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}{{ album.nome }} — ADECIN Nova Jerusalém{% endblock %}
+
+{% block content %}
+
+<article class="m-wrap m-wrap--texto">
+
+  <header class="album__header">
+    <a class="m-back" href="{% url 'galeria' %}">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+        <path d="M10 3L5 8l5 5"/>
+      </svg>
+      Mídia
+    </a>
+
+    <p class="m-eyebrow">{{ album.data }}</p>
+    <h1 class="album__title">{{ album.nome }}</h1>
+  </header>
+
+  {% for video in videos %}
+    <div class="video">
+      <iframe
+        src="https://www.youtube-nocookie.com/embed/{{ video.youtube_id }}"
+        title="{{ video.titulo }}"
+        loading="lazy"
+        frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        referrerpolicy="strict-origin-when-cross-origin"
+        allowfullscreen>
+      </iframe>
+    </div>
+  {% endfor %}
+
+  <section class="sheet">
+    <div class="sheet__head">
+      <h2 class="sheet__title">Fotos</h2>
+      <span class="sheet__count">{{ album.quantidade_fotos }} no álbum</span>
+    </div>
+
+    <ul class="sheet__grid">
+      {% for foto in fotos %}
+        <li>
+          <a class="frame" href="{{ foto.imagem.url }}" target="_blank" rel="noopener"
+             title="Abrir foto {{ forloop.counter }}">
+            <img src="{{ foto.imagem.url }}" alt="Foto {{ forloop.counter }} do álbum {{ album.nome }}" loading="lazy">
+          </a>
+        </li>
+      {% endfor %}
+    </ul>
+  </section>
+
+</article>
+
+{% endblock %}

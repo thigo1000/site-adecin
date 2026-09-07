@@ -1,0 +1,46 @@
+{% extends 'usuario/base_usuario.html' %}
+{% block title %}Ativar acesso — ADECIN Nova Jerusalém{% endblock %}
+
+{% block conteudo %}
+
+<main class="acesso">
+  <div class="acesso__caixa">
+
+    <p class="passo">Etapa 1 de 2 <span class="passo__traco"></span></p>
+
+    <section class="cartao">
+
+      <h1 class="cartao__titulo">Ativar seu acesso</h1>
+      <p class="cartao__texto">A área de membros é liberada para quem já está na lista da igreja. Informe seu CPF para conferirmos.</p>
+
+      <form method="post" novalidate>
+
+        {% csrf_token %}
+        {% include 'usuario/campo.html' %}
+
+        <small class="campo__ajuda">Só os números, sem pontuação.</small>
+
+        <button class="botao" type="submit">Conferir meus dados</button>
+
+      </form>
+
+      <p class="rodape-cartao">Já ativou seu acesso? <a href="{% url 'login' %}">Entrar</a></p>
+
+    </section>
+
+    <p class="apoio">Seus dados não estão na lista? Fale com a secretaria.</p>
+
+  </div>
+</main>
+
+<script>
+document.querySelectorAll('#id_cpf').forEach(function (campo) {
+  campo.addEventListener('input', function () {
+    var limpo = campo.value.replace(/\D/g, '');
+    if (campo.value !== limpo) {
+      campo.value = limpo;
+    }
+  });
+});
+</script>
+{% endblock %}

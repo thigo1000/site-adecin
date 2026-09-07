@@ -1,0 +1,148 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Gabinete pastoral — ADECIN Nova Jerusalém{% endblock %}
+
+{% block content %}
+
+<main class="gab">
+
+  <header class="gab__topo">
+    <span class="eyebrow">Gabinete pastoral</span>
+    <h1 class="gab__titulo">Agendar com o pastor</h1>
+  </header>
+  {% if cancelado %}
+    <section class="cancelado">
+      <span class="cancelado__selo" aria-hidden="true">
+        <svg viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </span>
+
+      <div class="cancelado__texto">
+        <h2 class="cancelado__titulo">Seu horário foi cancelado</h2>
+        <p class="cancelado__quando">
+          {{ cancelado.data|date:"l, j \d\e F" }}, às {{ cancelado.horario|time:"H\hi" }}
+        </p>
+        {% if cancelado.motivo_cancelamento %}
+          <p class="cancelado__motivo">{{ cancelado.motivo_cancelamento }}</p>
+        {% endif %}
+        <p class="cancelado__nota">Escolha outro horário abaixo, se quiser.</p>
+      </div>
+    </section>
+  {% endif %}
+
+  {% if agendamento %}
+
+    <section class="marcado">
+      <span class="marcado__selo" aria-hidden="true">
+        <svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>
+      </span>
+
+      <h2 class="marcado__titulo">Você tem um horário marcado</h2>
+
+      <p class="marcado__quando">
+        {{ agendamento.data|date:"l, j \d\e F" }}, às {{ agendamento.horario|time:"H\hi" }}
+      </p>
+
+      {% if agendamento.motivo %}
+        <p class="marcado__motivo">{{ agendamento.motivo }}</p>
+      {% endif %}
+
+      {% if whatsapp %}
+        <a class="zap" href="{{ whatsapp }}" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M21 11.5a8.5 8.5 0 0 1-12.7 7.4L3 20.5l1.7-5.1A8.5 8.5 0 1 1 21 11.5z"/>
+            <path d="M8.5 9.5c0 3 2 5 5 5 .8 0 1.5-.6 1.5-1.2l-1.6-.8-.8.9a5.6 5.6 0 0 1-2-2l.9-.8-.8-1.6c-.6 0-1.2.7-1.2 1.5z"/>
+          </svg>
+          Avisar o pastor no WhatsApp
+        </a>
+        <p class="zap__nota">Abre a conversa com a mensagem pronta. Você é quem envia.</p>
+      {% endif %}
+
+      <div class="marcado__acoes">
+        {% if agendamento.pode_cancelar %}
+          <form method="post" action="{% url 'cancelar_gabinete' agendamento.id %}">
+            {% csrf_token %}
+            <button type="submit" class="cancelar">Cancelar este horário</button>
+          </form>
+        {% else %}
+          <p class="marcado__aviso">
+            Faltam menos de 24 horas. Para desmarcar, fale direto com a secretaria.
+          </p>
+        {% endif %}
+      </div>
+    </section>
+
+  {% elif dias %}
+
+    <p class="gab__lead">
+      Escolha um dia e um horário disponível. O atendimento dura uma hora.
+    </p>
+
+    <form method="post" class="gab__form">
+      {% csrf_token %}
+
+      {% if form.non_field_errors %}
+        {% for erro in form.non_field_errors %}
+          <p class="erro-form">{{ erro }}</p>
+        {% endfor %}
+      {% endif %}
+
+      <span class="eyebrow">Dias disponíveis</span>
+
+      <div class="dias" role="tablist">
+        {% for dia in dias %}
+          <button type="button"
+                  class="dia {% if forloop.first %}dia--ativo{% endif %}"
+                  data-dia="{{ dia.data|date:'Y-m-d' }}"
+                  role="tab"
+                  aria-selected="{% if forloop.first %}true{% else %}false{% endif %}">
+            <span class="dia__semana">{{ dia.data|date:"D" }}</span>
+            <span class="dia__num">{{ dia.data|date:"d" }}</span>
+            <span class="dia__mes">{{ dia.data|date:"M" }}</span>
+          </button>
+        {% endfor %}
+      </div>
+
+      {% for dia in dias %}
+        <div class="painel {% if not forloop.first %}painel--oculto{% endif %}"
+             data-dia="{{ dia.data|date:'Y-m-d' }}">
+
+          {% for bloco in dia.blocos %}
+            <span class="eyebrow eyebrow--bloco">
+              {{ bloco.inicio|time:"H\h" }} às {{ bloco.fim|time:"H\h" }}
+            </span>
+
+            <div class="vagas">
+              {% for vaga in bloco.vagas %}
+                <label class="vaga {% if not vaga.livre %}vaga--ocupada{% endif %}">
+                  <input type="radio"
+                         name="quando"
+                         value="{{ dia.data|date:'Y-m-d' }}T{{ vaga.hora|time:'H:i' }}"
+                         {% if not vaga.livre %}disabled{% endif %}>
+                  <span>{{ vaga.hora|time:"H:i" }}</span>
+                </label>
+              {% endfor %}
+            </div>
+          {% endfor %}
+
+        </div>
+      {% endfor %}
+
+      <span class="eyebrow">Motivo <span class="eyebrow__nota">— opcional</span></span>
+      <textarea class="gab__motivo" name="motivo" rows="3"
+                placeholder="Se quiser, conte brevemente o assunto"></textarea>
+
+      <button type="submit" class="botao">Confirmar horário</button>
+    </form>
+
+  {% else %}
+
+    <p class="vazio">
+      Não há horários abertos no momento. Assim que o pastor publicar novas datas,
+      elas aparecem aqui.
+    </p>
+
+  {% endif %}
+
+</main>
+
+{% endblock %}

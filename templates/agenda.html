@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Agenda — ADECIN Nova Jerusalém{% endblock %}
+
+{% block content %}
+
+  <main class="content">
+
+    <!-- ============ SEMANAL ============ -->
+    <section id="semana" class="reveal">
+      <h2>Agenda semanal</h2>
+      <p>Nossa programação da semana. Você é bem-vindo em qualquer um deles.</p>
+      <div class="semana-grid">
+        {% for agenda in dados %}
+          <article class="semana-card">
+            <div class="sc-hora">{{ agenda.horario }}</div>
+            <div class="sc-texto">
+              <span class="sc-dia">{{ agenda.get_dia_display }}</span>
+              <span class="sc-titulo">{{ agenda.evento }}</span>
+            </div>
+          </article>
+        {% empty %}
+          <p class="vazio">A programação da semana ainda não foi publicada.</p>
+        {% endfor %}
+      </div>
+    </section>
+
+    <!-- ============ MENSAL ============ -->
+    {% if datas %}
+      <section id="mes" class="reveal">
+        <span class="eyebrow">{{ datas.0.data|date:"F" }} de {{ datas.0.data|date:"Y" }}</span>
+        <h2>Agenda mensal</h2>
+        <p>Datas especiais deste mês.</p>
+        <div class="mes-grid">
+          {% for evento in datas %}
+            <article class="mes-card">
+              <div class="mc-data">
+                <span class="mc-num">{{ evento.data|date:"d" }}</span>
+                <span class="mc-mes">{{ evento.data|date:"M" }}</span>
+              </div>
+              <div class="mc-info">
+                <h3>{{ evento.culto }}</h3>
+                <p>{{ evento.data|date:"H:i" }}</p>
+              </div>
+            </article>
+          {% endfor %}
+        </div>
+      </section>
+    {% endif %}
+
+  </main>
+
+{% endblock %}

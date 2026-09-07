@@ -1,0 +1,11 @@
+{% for field in form.visible_fields %}
+  <div class="campo">
+    <label class="campo__rotulo" for="{{ field.id_for_label }}">{{ field.label }}</label>
+    {{ field }}
+    {% if field.errors %}
+      {% for erro in field.errors %}
+        <small class="campo__ajuda">{{ erro }}</small>
+      {% endfor %}
+    {% endif %}
+  </div>
+{% endfor %}

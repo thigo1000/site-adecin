@@ -1,0 +1,128 @@
+{% extends 'base.html' %}
+
+{% block title %}ADECIN Nova Jerusalém — Aqui é o seu lugar{% endblock %}
+
+{% block mural %}{% include 'partials/_mural.html' %}{% endblock %}
+
+{% block content %}
+
+<main class="content">
+
+  <!-- ============ NOSSA HISTÓRIA ============ -->
+  <section id="sobre" class="reveal">
+    <span class="eyebrow">Quem somos</span>
+    <h2>Nossa história</h2>
+    <p>
+      {# TEXTO PROVISÓRIO — substituir pelo histórico da ADECIN Nova Jerusalém. #}
+      Somos uma comunidade de fé que acredita que a igreja não é um prédio, mas pessoas
+      caminhando juntas. Aqui você encontra um espaço para adorar, aprender e servir —
+      não importa em que ponto da sua jornada você esteja.
+    </p>
+  </section>
+
+  <!-- ============ MISSÃO, VISÃO E VALORES ============ -->
+  <section id="proposito" class="reveal">
+    <h2>Missão, visão e valores</h2>
+
+    <div class="proposito">
+
+      <article class="proposito__item">
+        <svg class="proposito__icone" viewBox="0 0 24 24" aria-hidden="true">
+          <circle cx="11" cy="13" r="8"/><circle cx="11" cy="13" r="4"/>
+          <path d="M11 13l8-8M16 5h3v3"/>
+        </svg>
+        <p class="proposito__kick">Nossa</p>
+        <h3>Missão</h3>
+        <p>Ganhar almas, discipular e preparar vidas para o cumprimento do propósito de Deus.</p>
+
+        <div class="versiculo">
+          <span class="versiculo__ref">Base bíblica · Mateus 28:19-20</span>
+          <p class="versiculo__texto">Ide, portanto, fazei discípulos de todas as nações</p>
+        </div>
+      </article>
+
+      <article class="proposito__item">
+        <svg class="proposito__icone" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M2 12s3.6-6 10-6 10 6 10 6-3.6 6-10 6-10-6-10-6z"/>
+          <circle cx="12" cy="12" r="2.6"/>
+        </svg>
+        <p class="proposito__kick">Nossa</p>
+        <h3>Visão</h3>
+        <p>Ser uma igreja que acolhe, transforma e desenvolve pessoas em todas as áreas da vida, conduzindo cada indivíduo a um relacionamento real e profundo com Cristo.</p>
+      </article>
+
+    </div>
+
+    <span class="eyebrow">Nossos valores</span>
+
+    <div class="valores-grid">
+
+      <div class="valor-card">
+        <div class="valor-card__topo">
+          <svg class="valor-card__icone" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 20s-6.5-4.2-6.5-8.5A3.5 3.5 0 0112 9.8a3.5 3.5 0 016.5 1.7C18.5 15.8 12 20 12 20z"/>
+            <path d="M4 20c1-2 3-3 5-3M20 20c-1-2-3-3-5-3"/>
+          </svg>
+        </div>
+        <h3>Compaixão</h3>
+        <p>Amar pessoas como Cristo amou, acolhendo sem julgamento e estendendo a mão aos que precisam.</p>
+      </div>
+
+      <div class="valor-card">
+        <div class="valor-card__topo">
+          <svg class="valor-card__icone" viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="12" cy="8" r="3"/><circle cx="5" cy="10" r="2.2"/><circle cx="19" cy="10" r="2.2"/>
+            <path d="M7 19c0-3 2.3-5 5-5s5 2 5 5M1.5 18c0-2 1.5-3.4 3.5-3.4M22.5 18c0-2-1.5-3.4-3.5-3.4"/>
+          </svg>
+        </div>
+        <h3>Comunhão</h3>
+        <p>Viver em unidade, construindo relacionamentos saudáveis dentro e fora da igreja.</p>
+      </div>
+
+      <div class="valor-card">
+        <div class="valor-card__topo">
+          <svg class="valor-card__icone" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M8 13l3 3 3-3M3 11l4-4 5 2 5-2 4 4M6 15l3 4h6l3-4"/>
+          </svg>
+        </div>
+        <h3>Unidade</h3>
+        <p>Caminhar juntos, com o mesmo propósito, fortalecendo o corpo de Cristo.</p>
+      </div>
+
+      <div class="valor-card">
+        <div class="valor-card__topo">
+          <svg class="valor-card__icone" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 6.5C10 5 7 4.5 3.5 5v13c3.5-.5 6.5 0 8.5 1.5 2-1.5 5-2 8.5-1.5V5c-3.5-.5-6.5 0-8.5 1.5zM12 6.5v13"/>
+          </svg>
+        </div>
+        <h3>Discipulado</h3>
+        <p>Formar seguidores de Cristo comprometidos, maduros e frutíferos.</p>
+      </div>
+
+      <div class="valor-card">
+        <div class="valor-card__topo">
+          <svg class="valor-card__icone" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M3 11l7-6 7 6M5 10v9h10v-9"/><path d="M17 6h5M19.5 3.5L22 6l-2.5 2.5"/>
+          </svg>
+        </div>
+        <h3>Multiplicação <small>(PGM)</small></h3>
+        <p>Crescer de forma intencional através dos Pequenos Grupos, levando o evangelho aos lares e formando novos líderes.</p>
+      </div>
+
+      <div class="valor-card">
+        <div class="valor-card__topo">
+          <svg class="valor-card__icone" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M3 11l9-7 9 7M5 10v10h14V10"/>
+            <path d="M12 17s-3-2-3-4a1.7 1.7 0 013-.9 1.7 1.7 0 013 .9c0 2-3 4-3 4z"/>
+          </svg>
+        </div>
+        <h3>Pertencimento</h3>
+        <p>Criar um ambiente onde cada pessoa se sinta amada, valorizada e parte da família de Deus.</p>
+      </div>
+
+    </div>
+  </section>
+
+</main>
+
+{% endblock %}

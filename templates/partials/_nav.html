@@ -1,0 +1,45 @@
+{% load static %}
+{% with rota=request.resolver_match.url_name %}
+
+<nav class="navbar">
+  <div class="navbar__inner">
+
+    <a class="brand" href="{% url 'index' %}">
+      <img src="{% static 'imagem/logo/logo-nav-verde.png' %}"
+           alt="ADECIN Nova Jerusalém">
+    </a>
+
+    <button class="nav-toggle" aria-label="Abrir menu" aria-expanded="false" aria-controls="nav-links">
+      <span class="nav-toggle__bar"></span>
+      <span class="nav-toggle__bar"></span>
+      <span class="nav-toggle__bar"></span>
+    </button>
+
+    <ul class="nav-links" id="nav-links">
+      <li><a href="{% url 'index' %}"       class="{% if rota == 'index' %}active{% endif %}">Início</a></li>
+      <li><a href="{% url 'agenda' %}"      class="{% if rota == 'agenda' %}active{% endif %}">Agenda</a></li>
+      <li><a href="{% url 'galeria' %}"       class="{% if rota == 'lista' or rota == 'album' %}active{% endif %}">Fotos/Vídeos</a></li>
+      <li><a href="{% url 'ebd' %}"         class="{% if rota == 'ebd' %}active{% endif %}">EBD</a></li>
+      <li><a href="{% url 'lista_curso' %}" class="{% if rota == 'lista_curso' or rota == 'curso' or rota == 'aula' %}active{% endif %}">Cursos e Treinamento</a></li>
+      {% if user.is_authenticated %}
+        <li><a href="{% url 'gabinete' %}" class="{% if rota == 'gabinete' %}active{% endif %}">Gabinete</a></li>
+      {% endif %} 
+    </ul>
+
+    <div class="user-area">
+      {% if user.is_authenticated %}
+        <p class="login">{{ user.username|capfirst }}</p>
+
+        <form action="{% url 'logout' %}" method="post">
+          {% csrf_token %}
+          <button type="submit" class="btn-sair">Sair</button>
+        </form>
+      {% else %}
+        <a class="login" href="{% url 'login' %}">Logar</a>
+      {% endif %}
+    </div>
+
+  </div>
+</nav>
+
+{% endwith %}
