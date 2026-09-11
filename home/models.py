@@ -1,5 +1,6 @@
 from django.db import models
-from PIL import Image
+from comum.imagens import redimensionar 
+
 
 class Anuncio(models.Model):
     titulo = models.CharField(max_length=50)
@@ -17,6 +18,5 @@ class Anuncio(models.Model):
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
-        imagem = Image.open(self.imagem.path)
-        imagem.thumbnail((1600, 900))
-        imagem.save(self.imagem.path)
+        redimensionar(self.imagem.path, 1600, 900)
+        

@@ -2,7 +2,7 @@ from django.db import models
 from django.core.validators import FileExtensionValidator
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
-
+from comum.imagens import redimensionar
 
 protegido = FileSystemStorage(location=settings.ARQUIVOS_PROTEGIDOS)
 
@@ -22,6 +22,12 @@ class Curso(models.Model):
     ativo = models.BooleanField(default=False)  
     slug =models.SlugField(unique=True)
     liberados = models.ManyToManyField(settings.AUTH_USER_MODEL,blank=True,related_name='cursos_liberados',)
+
+    
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        redimensionar(self.capa.path, 800, 800)
+
 
     def pode_ver_curso(self, user):
         if self.acesso == self.Acesso.RESTRITO:

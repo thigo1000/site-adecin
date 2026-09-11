@@ -1,11 +1,17 @@
 from django.db import models
-from PIL import Image
+from comum.imagens import redimensionar
+
 
 class Album(models.Model):
     nome = models.CharField(max_length=100)
     capa = models.ImageField(upload_to='capas/', blank=False)
     criado_em = models.DateTimeField(auto_now_add=True)
     data = models.DateField(null=True, blank=True)
+
+    
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        redimensionar(self.capa.path, 800, 800)
 
     def quantidade_fotos(self):
         return self.fotos.count()
@@ -20,9 +26,7 @@ class Foto(models.Model):
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
-        imagem = Image.open(self.imagem.path)
-        imagem.thumbnail((1600, 1600))
-        imagem.save(self.imagem.path)
+        redimensionar(self.imagem.path, 1600, 1600)
         
     def __str__(self):
         return f'Foto de {self.album.nome}'
