@@ -25,7 +25,8 @@ INSTALLED_APPS = [
     'ebd',
     'cursos',
     'usuario',
-    'gabinete'
+    'gabinete',
+    'pgm'
 ]
 
 MIDDLEWARE = [

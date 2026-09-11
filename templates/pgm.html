@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Pequenos Grupos de Multiplicação — ADECIN Nova Jerusalém{% endblock %}
+
+{% block content %}
+
+<main class="pgm">
+
+  <header class="pgm__topo">
+    <span class="eyebrow">PGM</span>
+    <h1 class="pgm__titulo">Pequenos Grupos de Multiplicação</h1>
+    <p class="pgm__lead">
+      Encontros nos lares, durante a semana, onde vidas são cuidadas, discipuladas,
+      ensinadas e fortalecidas. Encontre um grupo perto de você.
+    </p>
+  </header>
+
+  <ul class="pilares">
+    <li class="pilar">Cuidadas</li>
+    <li class="pilar">Discipuladas</li>
+    <li class="pilar">Ensinadas</li>
+    <li class="pilar">Fortalecidas</li>
+  </ul>
+
+  {% if pgms %}
+
+    <div class="filtro" role="group" aria-label="Filtrar por bairro">
+      <button type="button" class="filtro__item filtro__item--ativo" data-bairro="todos">
+        Todos os bairros
+      </button>
+      {% for bairro in bairros %}
+        <button type="button" class="filtro__item" data-bairro="{{ bairro }}">
+          {{ bairro }}
+        </button>
+      {% endfor %}
+    </div>
+
+    <ul class="grupos">
+      {% for grupo in pgms %}
+        <li class="grupo" data-bairro="{{ grupo.bairro }}">
+
+          <div class="grupo__foto">
+            <img src="{{ grupo.foto.url }}" alt="Grupo {{ grupo.nome }}" loading="lazy">
+          </div>
+
+          <div class="grupo__info">
+
+            <h2 class="grupo__nome">{{ grupo.nome }}</h2>
+
+            <span class="grupo__bairro">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M12 21s7-5.7 7-11a7 7 0 1 0-14 0c0 5.3 7 11 7 11z"/>
+                <circle cx="12" cy="10" r="2.6"/>
+              </svg>
+              {{ grupo.bairro }}
+            </span>
+
+            <p class="grupo__quando">
+              {{ grupo.get_dia_display }} &nbsp;·&nbsp; {{ grupo.horario|time:"H\hi" }}
+            </p>
+
+            <p class="grupo__lider">Líder {{ grupo.lider }}</p>
+
+            {% if grupo.contato %}
+              <a class="grupo__zap"
+                 href="https://wa.me/{{ grupo.contato }}?text={{ grupo.nome|urlencode }}"
+                 target="_blank" rel="noopener">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M21 11.5a8.5 8.5 0 0 1-12.7 7.4L3 20.5l1.7-5.1A8.5 8.5 0 1 1 21 11.5z"/>
+                  <path d="M8.5 9.5c0 3 2 5 5 5 .8 0 1.5-.6 1.5-1.2l-1.6-.8-.8.9a5.6 5.6 0 0 1-2-2l.9-.8-.8-1.6c-.6 0-1.2.7-1.2 1.5z"/>
+                </svg>
+                Falar com o Líder
+              </a>
+            {% endif %}
+
+          </div>
+
+        </li>
+      {% endfor %}
+    </ul>
+
+    <p class="grupos__vazio" hidden>Nenhum grupo neste bairro.</p>
+
+  {% else %}
+
+    <p class="vazio">
+      Os grupos ainda não foram publicados. Em breve esta página será atualizada.
+    </p>
+
+  {% endif %}
+
+</main>
+
+{% endblock %}

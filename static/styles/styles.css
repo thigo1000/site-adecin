@@ -15,7 +15,8 @@
     11.  Cursos
     12.  Área de acesso
     13.  Gabinete
-    14.  Acessibilidade
+    14. Pgm
+    15.  Acessibilidade
    --------------------------------------------------------------------------
    Convenções:
    - Existe UM único :root neste arquivo. Toda cor, fonte e sombra sai dele.
@@ -2136,7 +2137,232 @@ footer .endereco{ font-size:.92rem; }
 }
 
 /* ==========================================================================
-   14. ACESSIBILIDADE
+   14. PGM — Pequenos Grupos de Multiplicação
+   ========================================================================== */
+
+.pgm {
+    max-width: 56rem;
+    margin: 0 auto;
+    padding: 3rem 1.5rem 4rem;
+}
+
+.pgm__titulo {
+    font-size: 2.3rem;
+    line-height: 1.15;
+    color: var(--verde);
+    margin: 0 0 0.75rem;
+}
+
+.pgm__lead {
+    font-size: 1.05rem;
+    line-height: 1.7;
+    color: var(--texto-suave);
+    max-width: 48ch;
+}
+
+/* ---------- Os quatro pilares ---------- */
+
+.pilares {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    list-style: none;
+    margin: 1.75rem 0 2.5rem;
+    padding: 0;
+}
+
+.pilar {
+    padding: 0.4rem 1rem;
+    font-family: var(--fonte-corpo);
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--dourado);
+    border: 1px solid var(--dourado);
+    border-radius: 100px;
+}
+
+/* ---------- Filtro por bairro ---------- */
+
+.filtro {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1.75rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--linha);
+}
+
+.filtro__item {
+    padding: 0.5rem 1.1rem;
+    font-family: var(--fonte-corpo);
+    font-size: 0.92rem;
+    color: var(--verde);
+    background: var(--branco);
+    border: 1px solid var(--linha);
+    border-radius: 3px;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s, color 0.2s;
+}
+
+.filtro__item:hover {
+    border-color: var(--dourado);
+}
+
+.filtro__item--ativo {
+    background: var(--verde);
+    border-color: var(--verde);
+    color: var(--texto-claro);
+}
+
+/* ---------- Cards dos grupos ---------- */
+
+.grupos {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(23rem, 1fr));
+    gap: 1rem;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.grupo {
+    display: flex;
+    gap: 1.1rem;
+    padding: 1.25rem;
+    background: var(--branco);
+    border-top: 3px solid var(--dourado);
+    border-radius: 2px;
+    box-shadow: var(--sombra-p);
+}
+
+.grupo--oculto {
+    display: none;
+}
+
+/* Foto quadrada: as fotos chegam em proporções diferentes, e o cover
+   uniformiza sem distorcer ninguém. */
+.grupo__foto {
+    flex-shrink: 0;
+    width: 7.5rem;
+    aspect-ratio: 1;
+    overflow: hidden;
+    border-radius: 3px;
+    background: var(--fundo);
+}
+
+.grupo__foto img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.grupo__info {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.grupo__nome {
+    font-size: 1.3rem;
+    line-height: 1.25;
+    color: var(--verde);
+    margin: 0 0 0.3rem;
+}
+
+.grupo__bairro {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.85rem;
+    color: var(--texto-suave);
+    margin-bottom: 0.6rem;
+}
+
+.grupo__bairro svg {
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+    fill: none;
+    stroke: var(--dourado);
+    stroke-width: 1.6;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.grupo__quando {
+    font-family: var(--fonte-titulo);
+    font-weight: 600;
+    font-size: 1.05rem;
+    letter-spacing: 0.04em;
+    color: var(--verde);
+    margin: 0 0 0.2rem;
+}
+
+.grupo__lider {
+    font-size: 0.9rem;
+    font-style: italic;
+    color: var(--texto-suave);
+    margin: 0;
+}
+
+.grupo__zap {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: auto;
+    padding-top: 0.9rem;
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: var(--verde);
+    transition: color 0.2s;
+}
+
+.grupo__zap:hover {
+    color: var(--dourado);
+}
+
+.grupo__zap svg {
+    width: 17px;
+    height: 17px;
+    flex-shrink: 0;
+    fill: none;
+    stroke: var(--dourado);
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.grupos__vazio {
+    padding: 2.5rem 1rem;
+    text-align: center;
+    color: var(--texto-suave);
+    border: 1px dashed var(--linha-suave);
+    border-radius: 3px;
+}
+
+@media (max-width: 820px) {
+    .pgm {
+        padding: 2rem 1.25rem 3rem;
+    }
+
+    .pgm__titulo {
+        font-size: 1.9rem;
+    }
+
+    .grupo__foto {
+        width: 5.5rem;
+    }
+
+    .grupo__nome {
+        font-size: 1.15rem;
+    }
+}
+
+/* ==========================================================================
+   15. ACESSIBILIDADE
    ========================================================================== */
 
 .nav-links a:focus-visible,

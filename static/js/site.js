@@ -144,3 +144,35 @@ if (dias.length) {
     });
   });
 }
+
+/* PGM — filtro por bairro ------------------------------------------------
+
+   Os bairros vêm do banco, então nenhuma lista fica fixa aqui: o script
+   compara o data-bairro do botão com o do card. Sem JavaScript todos os
+   grupos continuam visíveis e a página segue utilizável.
+------------------------------------------------------------------------- */
+
+const filtros = document.querySelectorAll('.filtro__item');
+
+if (filtros.length) {
+  const grupos = document.querySelectorAll('.grupo');
+  const semNada = document.querySelector('.grupos__vazio');
+
+  filtros.forEach(botao => {
+    botao.addEventListener('click', () => {
+      const alvo = botao.dataset.bairro;
+
+      filtros.forEach(b => b.classList.toggle('filtro__item--ativo', b === botao));
+
+      let visiveis = 0;
+
+      grupos.forEach(card => {
+        const mostra = alvo === 'todos' || card.dataset.bairro === alvo;
+        card.classList.toggle('grupo--oculto', !mostra);
+        if (mostra) visiveis += 1;
+      });
+
+      if (semNada) semNada.hidden = visiveis > 0;
+    });
+  });
+}

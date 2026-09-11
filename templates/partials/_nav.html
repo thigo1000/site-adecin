@@ -19,6 +19,7 @@
       <li><a href="{% url 'index' %}"       class="{% if rota == 'index' %}active{% endif %}">Início</a></li>
       <li><a href="{% url 'agenda' %}"      class="{% if rota == 'agenda' %}active{% endif %}">Agenda</a></li>
       <li><a href="{% url 'galeria' %}"       class="{% if rota == 'lista' or rota == 'album' %}active{% endif %}">Fotos/Vídeos</a></li>
+      <li><a href="{% url 'pgm' %}"      class="{% if rota == 'pgm' %}active{% endif %}">PGM</a></li>
       <li><a href="{% url 'ebd' %}"         class="{% if rota == 'ebd' %}active{% endif %}">EBD</a></li>
       <li><a href="{% url 'lista_curso' %}" class="{% if rota == 'lista_curso' or rota == 'curso' or rota == 'aula' %}active{% endif %}">Cursos e Treinamento</a></li>
       {% if user.is_authenticated %}
