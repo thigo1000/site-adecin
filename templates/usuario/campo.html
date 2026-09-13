@@ -4,7 +4,7 @@
     {{ field }}
     {% if field.errors %}
       {% for erro in field.errors %}
-        <small class="campo__ajuda">{{ erro }}</small>
+        <small class="campo__erro">{{ erro }}</small>
       {% endfor %}
     {% endif %}
   </div>

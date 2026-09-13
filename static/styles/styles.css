@@ -15,7 +15,7 @@
     11.  Cursos
     12.  Área de acesso
     13.  Gabinete
-    14. Pgm
+    14.  Pgm
     15.  Acessibilidade
    --------------------------------------------------------------------------
    Convenções:
@@ -66,7 +66,6 @@
   --fonte-corpo:    'EB Garamond', Georgia, serif;
   --fonte-script:   'Kaushan Script', cursive;
 
-  /* Sombras e movimento */
   --sombra-p:       0 1px 3px rgba(7, 42, 32, .07);
   --sombra-m:       0 4px 14px rgba(7, 42, 32, .09);
   --sombra-g:       0 2px 6px rgba(7, 42, 32, .07), 0 28px 60px rgba(7, 42, 32, .16);
@@ -103,14 +102,12 @@ img{ max-width:100%; }
    3. COMPONENTES COMPARTILHADOS
    ========================================================================== */
 
-/* Container padrão do site (mural, rodapé) */
 .wrap{
   max-width:1180px;
   margin:0 auto;
   padding:0 28px;
 }
 
-/* Coluna de conteúdo das páginas internas */
 .content{
   max-width:960px;
   margin:0 auto;
@@ -129,7 +126,6 @@ img{ max-width:100%; }
   font-size:1.02rem;
 }
 
-/* Rótulo pequeno acima de títulos */
 .eyebrow{
   display:block;
   color:var(--dourado);
@@ -158,7 +154,6 @@ img{ max-width:100%; }
 }
 .cta:hover{ background:transparent; color:var(--dourado); }
 
-/* Estado vazio genérico — usar no {% else %} / {% empty %} dos loops */
 .vazio{
   color:var(--texto-suave);
   font-style:italic;
@@ -167,7 +162,6 @@ img{ max-width:100%; }
   border-bottom:1px solid var(--linha);
 }
 
-/* Entrada suave ao rolar (o site.js adiciona .in) */
 .reveal{
   opacity:0;
   transform:translateY(14px);
@@ -305,9 +299,6 @@ a.login:hover{ color:var(--dourado); }
 
 /* ==========================================================================
    5. MURAL DE ANÚNCIOS
-   --------------------------------------------------------------------------
-   Substitui o hero. As imagens vêm do telão da igreja, já em 16:9 — a caixa
-   reserva exatamente essa proporção, então nada é cortado em nenhuma tela.
    ========================================================================== */
 
 .mural{
@@ -339,8 +330,6 @@ a.login:hover{ color:var(--dourado); }
 /* Link opcional: só vira <a> quando o anúncio tem destino */
 .mural__link{ display:block; height:100%; }
 
-/* Degradê no rodapé da imagem — garante contraste dos controles
-   mesmo quando o slide é claro. */
 .mural::after{
   content:"";
   position:absolute;
@@ -507,8 +496,7 @@ footer .endereco{ font-size:.92rem; }
    7. HOME
    ========================================================================== */
 
-/* ---------- Missão e visão ----------
-   Conteúdo paralelo, então duas colunas de mesmo peso. */
+/* ---------- Missão e visão ----------*/
 .proposito{
   display:grid;
   grid-template-columns:repeat(auto-fit, minmax(16rem, 1fr));
@@ -548,7 +536,6 @@ footer .endereco{ font-size:.92rem; }
 }
 .content .proposito__item p{ font-size:1rem; max-width:none; }
 
-/* Versículo de apoio da missão — um dos dois únicos usos do script */
 .versiculo{
   margin-top:16px;
   padding-top:14px;
@@ -1522,10 +1509,6 @@ footer .endereco{ font-size:.92rem; }
 
 /* ==========================================================================
    12. ÁREA DE ACESSO — login, verificação e cadastro
-   --------------------------------------------------------------------------
-   No arquivo antigo esta seção trazia um segundo :root e um body{} próprios,
-   que sobrescreviam a base do site inteiro. Aqui ela usa os mesmos tokens
-   de cima e não redefine nada global.
    ========================================================================== */
 
 .topo{
@@ -1600,7 +1583,6 @@ footer .endereco{ font-size:.92rem; }
   color:var(--texto-suave);
 }
 
-/* Selo "cadastro encontrado" da etapa 2 */
 .encontrado{
   display:flex;
   align-items:center;
@@ -1661,6 +1643,14 @@ footer .endereco{ font-size:.92rem; }
   margin:-.85rem 0 1.25rem;
   font-size:.78rem;
   color:var(--texto-suave);
+}
+
+.campo__erro {
+    display: block;
+    margin: -0.85rem 0 1.25rem;
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--erro);
 }
 
 .dicas{
@@ -1727,8 +1717,58 @@ footer .endereco{ font-size:.92rem; }
 }
 
 /* ==========================================================================
+   Telas de recuperação de senha
+   ========================================================================== */
+
+.cartao--centro {
+    text-align: center;
+}
+
+.cartao__selo {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    margin-bottom: 1.25rem;
+    border-radius: 50%;
+    background: var(--fundo);
+    border: 1px solid var(--dourado);
+}
+
+.cartao__selo svg {
+    width: 22px;
+    height: 22px;
+    fill: none;
+    stroke: var(--dourado);
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.cartao__selo--erro {
+    border-color: var(--erro);
+}
+
+.cartao__selo--erro svg {
+    stroke: var(--erro);
+}
+
+.botao--link {
+    text-decoration: none;
+    text-align: center;
+}
+
+.cartao--centro .cartao__texto {
+    margin-bottom: 0;
+}
+
+.cartao--centro .apoio {
+    margin-top: 1.25rem;
+}
+
+/* ==========================================================================
    13. GABINETE PASTORAL
-   Acrescentar ao final do styles.css, antes da seção de acessibilidade.
    ========================================================================== */
 
 .gab {
@@ -1832,7 +1872,6 @@ footer .endereco{ font-size:.92rem; }
     color: var(--texto-rodape);
 }
 
-/* Sem JavaScript todos os painéis aparecem — o script esconde os inativos. */
 .painel--oculto {
     display: none;
 }
@@ -2383,7 +2422,6 @@ footer .endereco{ font-size:.92rem; }
   border-radius:2px;
 }
 
-/* Texto visível só para leitor de tela */
 .sr-apenas{
   position:absolute;
   width:1px;
@@ -2405,3 +2443,4 @@ footer .endereco{ font-size:.92rem; }
   .mes-card:hover,
   .album-card__link:hover{ transform:none; }
 }
+

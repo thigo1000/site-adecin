@@ -20,6 +20,8 @@ class VerificadorForms(forms.Form):
 
 
 class CadastroForms(UserCreationForm):
+    first_name = forms.CharField(required=True, label='Nome')
+    last_name = forms.CharField(required=False, label='Sobrenome')
     email = forms.EmailField(required=True, label='E-mail')
 
     def clean_username(self):
@@ -38,7 +40,7 @@ class CadastroForms(UserCreationForm):
 
     class Meta:
         model = User
-        fields = ('username', 'email')
+        fields = ('username', 'first_name', 'last_name', 'email')
 
 
 class LoginForms(AuthenticationForm):

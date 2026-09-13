@@ -29,7 +29,7 @@
 
     <div class="user-area">
       {% if user.is_authenticated %}
-        <p class="login">{{ user.username|capfirst }}</p>
+        <p class="login">{{ user.get_full_name|title }}</p>
 
         <form action="{% url 'logout' %}" method="post">
           {% csrf_token %}
