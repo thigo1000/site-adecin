@@ -7,14 +7,25 @@
 <article class="m-wrap m-wrap--texto">
 
   <header class="album__header">
-    <a class="m-back" href="{% url 'galeria' %}">
-      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
-        <path d="M10 3L5 8l5 5"/>
-      </svg>
-      Mídia
-    </a>
+    {% if album.colecao %}
+      <a class="m-back" href="{% url 'colecao' album.colecao.id %}">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+          <path d="M10 3L5 8l5 5"/>
+        </svg>
+        {{ album.colecao.nome }}
+      </a>
+    {% else %}
+      <a class="m-back" href="{% url 'lista' %}">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+          <path d="M10 3L5 8l5 5"/>
+        </svg>
+        Mídia
+      </a>
+    {% endif %}
 
-    <p class="m-eyebrow">{{ album.data }}</p>
+    <p class="m-eyebrow">
+      {% if album.data %}{{ album.data|date:"j \d\e F \d\e Y" }}{% else %}Sem data{% endif %}
+    </p>
     <h1 class="album__title">{{ album.nome }}</h1>
   </header>
 
@@ -44,8 +55,11 @@
           <a class="frame" href="{{ foto.imagem.url }}" target="_blank" rel="noopener"
              title="Abrir foto {{ forloop.counter }}">
             <img src="{{ foto.imagem.url }}" alt="Foto {{ forloop.counter }} do álbum {{ album.nome }}" loading="lazy">
+            <span class="frame__n">{{ forloop.counter|stringformat:"02d" }}</span>
           </a>
         </li>
+      {% empty %}
+        <li class="album-empty">Este álbum ainda não tem fotos.</li>
       {% endfor %}
     </ul>
   </section>

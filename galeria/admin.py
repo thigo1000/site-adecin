@@ -1,13 +1,21 @@
 from django.contrib import admin
 from galeria.forms import FotoEmLoteForm
-from galeria.models import Album, Foto, Video
+from galeria.models import Album, Foto, Video, Colecao
+
+
+@admin.register(Colecao)
+class ColecaoAdmin(admin.ModelAdmin):
+    list_display = ('nome', 'ativo')
+    list_editable = ('ativo',)
 
 
 @admin.register(Album)
 class AlbumAdmin(admin.ModelAdmin):
-    list_display = ('nome', 'data', 'quantidade_fotos', 'criado_em')
+    list_display = ('nome', 'colecao', 'data', 'quantidade_fotos', 'criado_em')
+    list_filter = ('colecao', 'data')
     search_fields = ('nome',)
     list_filter = ('data',)
+    list_per_page = 15
 
 
 @admin.register(Foto)
@@ -38,3 +46,4 @@ class VideoAdmin(admin.ModelAdmin):
     list_display = ('titulo', 'album', 'criado_em')
     list_filter = ('album',)
     search_fields = ('titulo',)
+    list_per_page = 10

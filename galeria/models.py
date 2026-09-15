@@ -2,11 +2,34 @@ from django.db import models
 from comum.imagens import redimensionar
 
 
+class Colecao(models.Model):
+    nome = models.CharField(max_length=50)
+    descricao = models.CharField(max_length=120, blank= True)
+    ativo = models.BooleanField(default=False)
+
+    def quantidade_albuns(self):
+        return self.albuns.count()
+
+    def album_recente(self):
+        return self.albuns.order_by('-data').first()
+
+    def capa(self):
+        album = self.album_recente()
+        return album.capa if album else None
+
+    def data(self):
+        album = self.album_recente()
+        return album.data if album else None
+
+    def __str__(self):
+        return self.nome
+
 class Album(models.Model):
     nome = models.CharField(max_length=100)
     capa = models.ImageField(upload_to='capas/', blank=False)
     criado_em = models.DateTimeField(auto_now_add=True)
     data = models.DateField(null=True, blank=True)
+    colecao = models.ForeignKey(Colecao, on_delete=models.PROTECT, related_name='albuns', null=True, blank=True)
 
     
     def save(self, *args, **kwargs):

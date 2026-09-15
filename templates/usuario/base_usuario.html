@@ -17,7 +17,7 @@
         {% include 'usuario/header.html' %}
 
         {% for message in messages %}
-            <p class="alerta" id="messages">{{ message }}</p>
+            <p class="alerta alerta--{{ message.tags }}">{{ message }}</p>
         {% endfor %}
 
         {% block conteudo %}{% endblock %}

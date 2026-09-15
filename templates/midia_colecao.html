@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}{{ colecao.nome }} — ADECIN Nova Jerusalém{% endblock %}
+
+{% block content %}
+
+  <header class="midia-head m-wrap">
+    <a class="m-back" href="{% url 'lista' %}">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+        <path d="M10 3L5 8l5 5"/>
+      </svg>
+      Mídia
+    </a>
+
+    <p class="m-eyebrow">Coleção · {{ colecao.quantidade_albuns }} álbu{{ colecao.quantidade_albuns|pluralize:"m,ns" }}</p>
+    <h1 class="midia-head__title">{{ colecao.nome }}</h1>
+
+    {% if colecao.descricao %}
+      <p class="midia-head__lead">{{ colecao.descricao }}</p>
+    {% endif %}
+  </header>
+
+  <div class="m-wrap">
+
+    <ul class="album-grid">
+      {% for album in albuns %}
+        <li class="album-card">
+          <a class="album-card__link" href="{% url 'album' album.id %}">
+
+            <div class="album-card__media">
+              <img src="{{ album.capa.url }}" alt="" loading="lazy">
+              <span class="album-card__badge" aria-hidden="true">
+                <svg viewBox="0 0 10 12" fill="currentColor"><path d="M0 0l10 6-10 6z"/></svg>
+              </span>
+            </div>
+
+            <div class="album-card__body">
+              <p class="m-eyebrow">
+                {% if album.data %}{{ album.data|date:"j \d\e F \d\e Y" }}{% else %}Sem data{% endif %}
+              </p>
+              <h2 class="album-card__title">{{ album.nome }}</h2>
+              <p class="album-card__meta">{{ album.quantidade_fotos }} foto{{ album.quantidade_fotos|pluralize }}</p>
+            </div>
+
+          </a>
+        </li>
+      {% empty %}
+        <li class="album-empty">Esta coleção ainda não tem álbuns.</li>
+      {% endfor %}
+    </ul>
+
+    {% if albuns.paginator.num_pages > 1 %}
+      {% include 'partials/_pager.html' with pagina=albuns %}
+    {% endif %}
+
+  </div>
+
+{% endblock %}

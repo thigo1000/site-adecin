@@ -14,28 +14,58 @@
 
   <div class="m-wrap">
 
-    <ul class="album-grid">
-      {% for album in albuns %}
-        <li class="album-card">
-          <a class="album-card__link" href="{% url 'album' album.id %}">
+      <ul class="album-grid">
+      {% for item in itens %}
+        <li class="album-card {% if item.tipo == 'colecao' %}album-card--pilha{% endif %}">
+          <a class="album-card__link"
+             href="{% if item.tipo == 'colecao' %}{% url 'colecao' item.obj.id %}{% else %}{% url 'album' item.obj.id %}{% endif %}">
+ 
             <div class="album-card__media">
-              <img src="{{ album.capa.url }}" alt="Capa do álbum {{ album.nome }}" loading="lazy">
-              <span class="album-card__badge" aria-hidden="true">
-                <svg viewBox="0 0 10 12" fill="currentColor"><path d="M0 0l10 6-10 6z"/></svg>
-              </span>
+              {% if item.capa %}
+                <img src="{{ item.capa.url }}" alt="" loading="lazy">
+              {% else %}
+                <span class="album-card__sem" aria-hidden="true">
+                  <svg viewBox="0 0 24 24">
+                    <rect x="3" y="5" width="18" height="14" rx="2"/>
+                    <circle cx="8.5" cy="10" r="1.5"/>
+                    <path d="m5 17 4.5-5 3 3.5L16 12l3 5"/>
+                  </svg>
+                </span>
+              {% endif %}
+ 
+              {% if item.tipo == 'album' %}
+                <span class="album-card__badge" aria-hidden="true">
+                  <svg viewBox="0 0 10 12" fill="currentColor"><path d="M0 0l10 6-10 6z"/></svg>
+                </span>
+              {% endif %}
             </div>
+ 
             <div class="album-card__body">
-              <p class="m-eyebrow">{{ album.data }}</p>
-              <h2 class="album-card__title">{{ album.nome }}</h2>
-              <p class="album-card__meta">{{ album.quantidade_fotos }} Fotos</p>
+              <p class="m-eyebrow">
+                {% if item.data %}{{ item.data|date:"j \d\e F \d\e Y" }}{% else %}Sem data{% endif %}
+              </p>
+ 
+              <h2 class="album-card__title">{{ item.obj.nome }}</h2>
+ 
+              <p class="album-card__meta">
+                {% if item.tipo == 'colecao' %}
+                  {{ item.quantidade }} álbu{{ item.quantidade|pluralize:"m,ns" }}
+                {% else %}
+                  {{ item.quantidade }} foto{{ item.quantidade|pluralize }}
+                {% endif %}
+              </p>
             </div>
+ 
           </a>
         </li>
       {% empty %}
         <li class="album-empty">Nenhum álbum publicado ainda.</li>
       {% endfor %}
     </ul>
-
+ 
+    {% if itens.paginator.num_pages > 1 %}
+      {% include 'partials/_pager.html' with pagina=itens %}
+    {% endif %}
   </div>
 
 {% endblock %}

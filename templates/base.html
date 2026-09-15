@@ -27,7 +27,7 @@
     {% include 'partials/_nav.html' %}
 
     {% for message in messages %}
-        <p class="alerta">{{ message }}</p>
+        <p class="alerta alerta--{{ message.tags }}">{{ message }}</p>
     {% endfor %}
 
     {% block mural %}{% endblock %}
