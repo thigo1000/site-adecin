@@ -1,5 +1,7 @@
 from django.db import models
-from comum.imagens import redimensionar 
+from comum.imagens import redimensionar
+from django.db.models.signals import post_delete
+from django.dispatch import receiver
 
 
 class Anuncio(models.Model):
@@ -19,4 +21,9 @@ class Anuncio(models.Model):
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
         redimensionar(self.imagem.path, 1600, 900)
-        
+
+
+@receiver(post_delete, sender=Anuncio)
+def anuncio_apagado(sender, instance, **kwargs):
+    if instance.imagem:
+        instance.imagem.delete(save=False)

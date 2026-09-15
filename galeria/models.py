@@ -1,5 +1,7 @@
 from django.db import models
 from comum.imagens import redimensionar
+from django.db.models.signals import post_delete
+from django.dispatch import receiver
 
 
 class Colecao(models.Model):
@@ -23,6 +25,7 @@ class Colecao(models.Model):
 
     def __str__(self):
         return self.nome
+
 
 class Album(models.Model):
     nome = models.CharField(max_length=100)
@@ -54,6 +57,7 @@ class Foto(models.Model):
     def __str__(self):
         return f'Foto de {self.album.nome}'
     
+
 class Video(models.Model):
     album = models.ForeignKey(Album, on_delete=models.CASCADE, related_name='videos')
     titulo = models.CharField(max_length=100)
@@ -62,3 +66,14 @@ class Video(models.Model):
 
     def __str__(self):
         return self.titulo
+
+
+@receiver(post_delete, sender=Album)
+def album_apagado(sender, instance, **kwargs):
+    if instance.capa:
+        instance.capa.delete(save=False)
+
+@receiver(post_delete, sender=Foto)
+def foto_apagada(sender, instance, **kwargs):
+    if instance.imagem:
+        instance.imagem.delete(save=False)

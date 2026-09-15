@@ -3,6 +3,8 @@ from django.core.validators import FileExtensionValidator
 from django.core.exceptions import ValidationError
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
+from django.db.models.signals import post_delete
+from django.dispatch import receiver
 
 
 protegido = FileSystemStorage(location=settings.ARQUIVOS_PROTEGIDOS)
@@ -32,3 +34,9 @@ class Turma(models.Model):
 
     def __str__(self):
         return self.nome
+
+
+@receiver(post_delete, sender=Turma)
+def material_apagado(sender, instance, **kwargs):
+    if instance.material:
+        instance.material.delete(save=False)

@@ -3,6 +3,9 @@ from django.core.validators import FileExtensionValidator
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
 from comum.imagens import redimensionar
+from django.db.models.signals import post_delete
+from django.dispatch import receiver
+
 
 protegido = FileSystemStorage(location=settings.ARQUIVOS_PROTEGIDOS)
 
@@ -73,3 +76,15 @@ class Material(models.Model):
     
     def __str__(self):
         return self.nome
+
+
+
+@receiver(post_delete, sender=Curso)
+def curso_apagado(sender, instance, **kwargs):
+    if instance.capa:
+        instance.capa.delete(save=False)
+
+@receiver(post_delete, sender=Material)
+def material_apagado(sender, instance, **kwargs):
+    if instance.pdf:
+        instance.pdf.delete(save=False)

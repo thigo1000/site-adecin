@@ -1,5 +1,7 @@
 from django.db import models
 from comum.imagens import redimensionar
+from django.db.models.signals import post_delete
+from django.dispatch import receiver
 
 
 class Pgm(models.Model):
@@ -33,3 +35,9 @@ class Pgm(models.Model):
 
     class Meta:
         ordering = ['nome', 'bairro']
+
+
+@receiver(post_delete, sender=Pgm)
+def pgm_apagado(sender, instance, **kwargs):
+    if instance.foto:
+        instance.foto.delete(save=False)
