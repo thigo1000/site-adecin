@@ -3,7 +3,7 @@ from django.core.exceptions import ValidationError
 from django.utils import timezone
 from usuario.models import Membro
 from django.db.models import Q
-
+from datetime import datetime, timedelta
 
 class Gabinete(models.Model):
     nome = models.CharField(max_length=70)
@@ -75,18 +75,22 @@ class Agendamento(models.Model):
  
         if ocupado:
             raise ValidationError({'horario': 'Esse horário já foi agendado.'})
- 
+
+        if self._state.adding and self.data and self.horario:
+            if self.inicio() <= timezone.now():
+                raise ValidationError({'horario': 'Esse horário já passou. Escolha outro.'})
+
         if self.membro_id and self.status == self.Status.ATIVO:
-            outro = Agendamento.objects.filter(membro=self.membro, data__gte=timezone.now().date(), status=self.Status.ATIVO).exclude(pk=self.pk).exists()
- 
+            outro = Agendamento.objects.filter(membro=self.membro, data__gte=timezone.localdate(), status=self.Status.ATIVO).exclude(pk=self.pk).exists()
+
             if outro:
                 raise ValidationError('Você já tem um horário marcado. Cancele antes de agendar outro.')
  
+    def inicio(self):
+        return timezone.make_aware(datetime.combine(self.data, self.horario))
+
     def pode_cancelar(self):
-        marcado = timezone.make_aware(
-            timezone.datetime.combine(self.data, self.horario)
-        )
-        return marcado - timezone.now() > timezone.timedelta(hours=24)
- 
+        return self.inicio() - timezone.now() > timedelta(hours=24)
+     
     def __str__(self):
         return f'{self.membro.nome} · {self.data} às {self.horario}'

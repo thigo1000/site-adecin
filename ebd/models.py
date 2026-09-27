@@ -5,9 +5,8 @@ from django.conf import settings
 from django.core.files.storage import FileSystemStorage
 from django.db.models.signals import post_delete
 from django.dispatch import receiver
+from comum.storage import protegido
 
-
-protegido = FileSystemStorage(location=settings.ARQUIVOS_PROTEGIDOS)
 
 class Tema(models.Model):
     livro = models.CharField(max_length=50)

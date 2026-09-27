@@ -1,16 +1,13 @@
 from pathlib import Path
-from decouple import config
+from decouple import config, Csv
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = config('SECRET_KEY')
 
-DEBUG = True
-
-ALLOWED_HOSTS = []
-
-
-# Application definition
+DEBUG = config('DEBUG', default=False, cast=bool)
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='', cast=Csv())
+CSRF_TRUSTED_ORIGINS = config('CSRF_TRUSTED_ORIGINS', default='', cast=Csv())
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -94,15 +91,29 @@ USE_I18N = True
 USE_TZ = True
 
 
-MAILERS = {
-    'default': {
-        'BACKEND': 'django.core.mail.backends.console.EmailBackend',
-    },
-}
+if DEBUG:
+    MAILERS = {'default': {'BACKEND': 'django.core.mail.backends.console.EmailBackend'}}
+else:
+    MAILERS = {
+        'default': {
+            'BACKEND': 'django.core.mail.backends.smtp.EmailBackend',
+            'OPTIONS': {
+                'host': config('EMAIL_HOST'),
+                'port': config('EMAIL_PORT', default=587, cast=int),
+                'username': config('EMAIL_USER'),
+                'password': config('EMAIL_PASSWORD'),
+                'use_tls': True,
+            },
+        }
+    }
+
+DEFAULT_FROM_EMAIL = config('EMAIL_USER', default='webmaster@localhost')
 
 STATIC_URL = 'static/'
 
 STATICFILES_DIRS = [BASE_DIR/'static']
+
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 MEDIA_URL = 'media/'
 
@@ -115,3 +126,7 @@ LOGIN_URL = 'login'
 LOGOUT_REDIRECT_URL = 'index'
 
 LOGIN_REDIRECT_URL = 'index'
+
+if not DEBUG:
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True

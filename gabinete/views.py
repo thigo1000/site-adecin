@@ -7,7 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ValidationError
 from django.utils import timezone
 from django.views.decorators.http import require_POST
-
+from django.db import IntegrityError
 
 def _membro_de(request):
     return getattr(request.user, 'membro', None)
@@ -31,6 +31,7 @@ def _link_whatsapp(agendamento, membro):
 
 
 def _monta_dias(hoje):
+    agora = timezone.localtime()
     janelas = Janela.objects.filter(data__gte=hoje)
 
     ocupados = set(
@@ -48,6 +49,7 @@ def _monta_dias(hoje):
         vagas = [
             {'hora': hora, 'livre': (janela.data, hora) not in ocupados}
             for hora in janela.horarios()
+            if not (janela.data == agora.date() and hora <= agora.time())
         ]
 
         if not vagas:
@@ -73,7 +75,7 @@ def gabinete(request):
         messages.error(request, 'Sua conta ainda não está ligada a um cadastro de membro.')
         return redirect('index')
 
-    hoje = timezone.now().date()
+    hoje = timezone.localdate()
 
     agendamento = Agendamento.objects.filter(
         membro=membro,
@@ -110,7 +112,12 @@ def gabinete(request):
                 messages.error(request, mensagem)
             return redirect('gabinete')
 
-        novo.save()
+        try:
+            novo.save()
+        except IntegrityError:
+            messages.error(request, 'Esse horário acabou de ser agendado por outra pessoa. Escolha outro.')
+            return redirect('gabinete')
+
         messages.success(request, 'Horário confirmado.')
         return redirect('gabinete')
 
