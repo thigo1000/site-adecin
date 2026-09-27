@@ -2,7 +2,6 @@ from django.db import models
 from django.core.validators import FileExtensionValidator
 from django.core.exceptions import ValidationError
 from django.conf import settings
-from django.core.files.storage import FileSystemStorage
 from django.db.models.signals import post_delete
 from django.dispatch import receiver
 from comum.storage import protegido
