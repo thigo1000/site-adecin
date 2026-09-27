@@ -12,12 +12,12 @@ def galeria(request):
     itens = []
 
     for atual in Colecao.objects.filter(ativo=True):
+        recente = atual.album_recente()
         itens.append({
             'tipo': 'colecao',
             'obj': atual,
-            'data': atual.data(),
-            'capa': atual.capa(),
-            'quantidade': atual.quantidade_albuns(),
+            'data': recente.data if recente else None,
+            'capa': recente.capa if recente else None,
         })
 
     for atual in Album.objects.filter(colecao__isnull=True):

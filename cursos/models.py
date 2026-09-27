@@ -58,7 +58,6 @@ class Aula(models.Model):
     youtube_id = models.CharField(max_length=150)
     titulo = models.CharField(max_length=100)
     curso = models.ForeignKey(Curso, on_delete=models.CASCADE, related_name='aulas')
-    duracao = models.PositiveIntegerField(blank=True, null=True)
     gratis = models.BooleanField(default=False)
 
     class Meta:

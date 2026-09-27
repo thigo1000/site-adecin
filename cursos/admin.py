@@ -24,7 +24,7 @@ admin.site.register(Curso, ListaCurso)
 
 
 class ListaAula(admin.ModelAdmin):
-    list_display = ('ordem', 'titulo', 'gratis', 'youtube_id', 'curso', 'duracao')
+    list_display = ('ordem', 'titulo', 'gratis', 'youtube_id', 'curso')
     list_editable = ('gratis',)
     list_filter = ('curso',)
 admin.site.register(Aula, ListaAula)
