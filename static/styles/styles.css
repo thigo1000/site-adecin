@@ -2394,13 +2394,30 @@ footer .endereco{ font-size:.92rem; }
 
 /* ---------- Filtro por bairro ---------- */
 
+.filtros {
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--linha);
+}
+
 .filtro {
     display: flex;
     flex-wrap: wrap;
+    align-items: center;
     gap: 0.5rem;
-    margin-bottom: 1.75rem;
-    padding-bottom: 1.5rem;
-    border-bottom: 1px solid var(--linha);
+}
+
+.filtro__rotulo {
+    flex-basis: 100%;
+    font-family: var(--fonte-corpo);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--texto-suave);
 }
 
 .filtro__item {
@@ -2423,6 +2440,42 @@ footer .endereco{ font-size:.92rem; }
     background: var(--verde);
     border-color: var(--verde);
     color: var(--texto-claro);
+}
+
+/* ---------- Seções por categoria ---------- */
+
+.pgm-secoes {
+    display: flex;
+    flex-direction: column;
+    gap: 2.75rem;
+}
+
+.pgm-secao--oculta {
+    display: none;
+}
+
+.pgm-secao__topo {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.35rem 0.9rem;
+    margin-bottom: 1rem;
+}
+
+.pgm-secao__titulo {
+    font-size: 1.7rem;
+    line-height: 1.2;
+    color: var(--verde);
+    margin: 0;
+}
+
+.pgm-secao__faixa {
+    font-family: var(--fonte-corpo);
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--dourado);
 }
 
 /* ---------- Cards dos grupos ---------- */
@@ -2450,8 +2503,6 @@ footer .endereco{ font-size:.92rem; }
     display: none;
 }
 
-/* Foto quadrada: as fotos chegam em proporções diferentes, e o cover
-   uniformiza sem distorcer ninguém. */
 .grupo__foto {
     flex-shrink: 0;
     width: 7.5rem;
@@ -2479,6 +2530,10 @@ footer .endereco{ font-size:.92rem; }
     line-height: 1.25;
     color: var(--verde);
     margin: 0 0 0.3rem;
+}
+
+    .pgm-secao__titulo {
+        font-size: 1.45rem;
 }
 
 .grupo__bairro {

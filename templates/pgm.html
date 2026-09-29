@@ -22,64 +22,98 @@
     <li class="pilar">Fortalecidas</li>
   </ul>
 
-  {% if pgms %}
+  {% if secoes %}
 
-    <div class="filtro" role="group" aria-label="Filtrar por bairro">
-      <button type="button" class="filtro__item filtro__item--ativo" data-bairro="todos">
-        Todos os bairros
-      </button>
-      {% for bairro in bairros %}
-        <button type="button" class="filtro__item" data-bairro="{{ bairro }}">
-          {{ bairro }}
+    <div class="filtros">
+
+      <div class="filtro" role="group" aria-label="Filtrar por categoria">
+        <span class="filtro__rotulo">Categoria</span>
+        <button type="button" class="filtro__item filtro__item--ativo" data-categoria="todas" aria-pressed="true">
+          Todas
         </button>
-      {% endfor %}
+        {% for secao in secoes %}
+          <button type="button" class="filtro__item" data-categoria="{{ secao.valor }}" aria-pressed="false">
+            {{ secao.rotulo }}
+          </button>
+        {% endfor %}
+      </div>
+
+      {% if bairros|length > 1 %}
+        <div class="filtro" role="group" aria-label="Filtrar por bairro">
+          <span class="filtro__rotulo">Bairro</span>
+          <button type="button" class="filtro__item filtro__item--ativo" data-bairro="todos" aria-pressed="true">
+            Todos
+          </button>
+          {% for bairro in bairros %}
+            <button type="button" class="filtro__item" data-bairro="{{ bairro }}" aria-pressed="false">
+              {{ bairro }}
+            </button>
+          {% endfor %}
+        </div>
+      {% endif %}
+
     </div>
 
-    <ul class="grupos">
-      {% for grupo in pgms %}
-        <li class="grupo" data-bairro="{{ grupo.bairro }}">
+    <div class="pgm-secoes">
+    {% for secao in secoes %}
+      <section class="pgm-secao" data-categoria="{{ secao.valor }}" aria-labelledby="secao-{{ secao.valor }}">
 
-          <div class="grupo__foto">
-            <img src="{{ grupo.foto.url }}" alt="Grupo {{ grupo.nome }}" loading="lazy">
-          </div>
+        <header class="pgm-secao__topo">
+          <h2 class="pgm-secao__titulo" id="secao-{{ secao.valor }}">{{ secao.rotulo }}</h2>
+          {% if secao.faixa %}
+            <span class="pgm-secao__faixa">{{ secao.faixa }}</span>
+          {% endif %}
+        </header>
 
-          <div class="grupo__info">
+        <ul class="grupos">
+          {% for grupo in secao.grupos %}
+            <li class="grupo" data-bairro="{{ grupo.bairro }}">
 
-            <h2 class="grupo__nome">{{ grupo.nome }}</h2>
+              <div class="grupo__foto">
+                <img src="{{ grupo.foto.url }}" alt="Grupo {{ grupo.nome }}" loading="lazy">
+              </div>
 
-            <span class="grupo__bairro">
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M12 21s7-5.7 7-11a7 7 0 1 0-14 0c0 5.3 7 11 7 11z"/>
-                <circle cx="12" cy="10" r="2.6"/>
-              </svg>
-              {{ grupo.bairro }}
-            </span>
+              <div class="grupo__info">
 
-            <p class="grupo__quando">
-              {{ grupo.get_dia_display }} &nbsp;·&nbsp; {{ grupo.horario|time:"H\hi" }}
-            </p>
+                <h3 class="grupo__nome">{{ grupo.nome }}</h3>
 
-            <p class="grupo__lider">Líder {{ grupo.lider }}</p>
+                <span class="grupo__bairro">
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M12 21s7-5.7 7-11a7 7 0 1 0-14 0c0 5.3 7 11 7 11z"/>
+                    <circle cx="12" cy="10" r="2.6"/>
+                  </svg>
+                  {{ grupo.bairro }}
+                </span>
 
-            {% if grupo.contato %}
-              <a class="grupo__zap"
-                 href="https://wa.me/{{ grupo.contato }}?text={{ grupo.nome|urlencode }}"
-                 target="_blank" rel="noopener">
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M21 11.5a8.5 8.5 0 0 1-12.7 7.4L3 20.5l1.7-5.1A8.5 8.5 0 1 1 21 11.5z"/>
-                  <path d="M8.5 9.5c0 3 2 5 5 5 .8 0 1.5-.6 1.5-1.2l-1.6-.8-.8.9a5.6 5.6 0 0 1-2-2l.9-.8-.8-1.6c-.6 0-1.2.7-1.2 1.5z"/>
-                </svg>
-                Falar com o Líder
-              </a>
-            {% endif %}
+                <p class="grupo__quando">
+                  {{ grupo.get_dia_display }} &nbsp;·&nbsp; {{ grupo.horario|time:"H\hi" }}
+                </p>
 
-          </div>
+                <p class="grupo__lider">Líder {{ grupo.lider }}</p>
 
-        </li>
-      {% endfor %}
-    </ul>
+                {% if grupo.contato %}
+                  <a class="grupo__zap"
+                     href="https://wa.me/{{ grupo.contato }}?text={{ grupo.nome|urlencode }}"
+                     target="_blank" rel="noopener">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M21 11.5a8.5 8.5 0 0 1-12.7 7.4L3 20.5l1.7-5.1A8.5 8.5 0 1 1 21 11.5z"/>
+                      <path d="M8.5 9.5c0 3 2 5 5 5 .8 0 1.5-.6 1.5-1.2l-1.6-.8-.8.9a5.6 5.6 0 0 1-2-2l.9-.8-.8-1.6c-.6 0-1.2.7-1.2 1.5z"/>
+                    </svg>
+                    Falar com o Líder
+                  </a>
+                {% endif %}
 
-    <p class="grupos__vazio" hidden>Nenhum grupo neste bairro.</p>
+              </div>
+
+            </li>
+          {% endfor %}
+        </ul>
+
+      </section>
+    {% endfor %}
+    </div>
+
+    <p class="grupos__vazio" hidden>Nenhum grupo com esses filtros.</p>
 
   {% else %}
 

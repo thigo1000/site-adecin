@@ -145,34 +145,65 @@ if (dias.length) {
   });
 }
 
-/* PGM — filtro por bairro ------------------------------------------------
+/* PGM — filtro por categoria e por bairro ---------------------------------
 
-   Os bairros vêm do banco, então nenhuma lista fica fixa aqui: o script
-   compara o data-bairro do botão com o do card. Sem JavaScript todos os
-   grupos continuam visíveis e a página segue utilizável.
+   Os dois filtros valem juntos: um card aparece se bater com a categoria
+   E com o bairro escolhidos. Seção que fica sem card visível some inteira.
+   Categorias e bairros vêm do banco, nada fica fixo aqui. Sem JavaScript
+   todos os grupos continuam visíveis e a página segue utilizável.
 ------------------------------------------------------------------------- */
 
-const filtros = document.querySelectorAll('.filtro__item');
+const secoesPgm = document.querySelectorAll('.pgm-secao');
 
-if (filtros.length) {
-  const grupos = document.querySelectorAll('.grupo');
+if (secoesPgm.length) {
+  const botoesCategoria = document.querySelectorAll('.filtro__item[data-categoria]');
+  const botoesBairro = document.querySelectorAll('.filtro__item[data-bairro]');
   const semNada = document.querySelector('.grupos__vazio');
 
-  filtros.forEach(botao => {
-    botao.addEventListener('click', () => {
-      const alvo = botao.dataset.bairro;
+  let categoria = 'todas';
+  let bairro = 'todos';
 
-      filtros.forEach(b => b.classList.toggle('filtro__item--ativo', b === botao));
+  const marcarAtivo = (botoes, escolhido) => {
+    botoes.forEach(b => {
+      const ativo = b === escolhido;
+      b.classList.toggle('filtro__item--ativo', ativo);
+      b.setAttribute('aria-pressed', ativo ? 'true' : 'false');
+    });
+  };
 
+  const aplicar = () => {
+    let total = 0;
+
+    secoesPgm.forEach(secao => {
+      const categoriaOk = categoria === 'todas' || secao.dataset.categoria === categoria;
       let visiveis = 0;
 
-      grupos.forEach(card => {
-        const mostra = alvo === 'todos' || card.dataset.bairro === alvo;
+      secao.querySelectorAll('.grupo').forEach(card => {
+        const mostra = categoriaOk && (bairro === 'todos' || card.dataset.bairro === bairro);
         card.classList.toggle('grupo--oculto', !mostra);
         if (mostra) visiveis += 1;
       });
 
-      if (semNada) semNada.hidden = visiveis > 0;
+      secao.classList.toggle('pgm-secao--oculta', visiveis === 0);
+      total += visiveis;
+    });
+
+    if (semNada) semNada.hidden = total > 0;
+  };
+
+  botoesCategoria.forEach(botao => {
+    botao.addEventListener('click', () => {
+      categoria = botao.dataset.categoria;
+      marcarAtivo(botoesCategoria, botao);
+      aplicar();
+    });
+  });
+
+  botoesBairro.forEach(botao => {
+    botao.addEventListener('click', () => {
+      bairro = botao.dataset.bairro;
+      marcarAtivo(botoesBairro, botao);
+      aplicar();
     });
   });
 }

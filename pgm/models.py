@@ -15,7 +15,21 @@ class Pgm(models.Model):
         SEXTA = (5, 'Sexta')
         SABADO = (6, 'Sábado')
 
+    class Categoria(models.TextChoices):
+        MULHERES = 'mulheres', 'Mulheres'
+        HOMENS = 'homens', 'Homens'
+        JOVENS = 'jovens', 'Jovens'
+        ADOLESCENTES = 'adolescentes', 'Adolescentes'
+        JUNIORES = 'juniores', 'Juniores'
+
+    FAIXAS_ETARIAS = {
+        Categoria.JOVENS: '18 anos ou mais',
+        Categoria.ADOLESCENTES: '14 a 17 anos',
+        Categoria.JUNIORES: '10 a 13 anos',
+    }
+
     nome = models.CharField(max_length= 50)
+    categoria = models.CharField(max_length=20, choices=Categoria.choices)
     bairro = models.CharField(max_length=50)
     dia = models.IntegerField(choices=DiaDaSemana.choices)
     horario = models.TimeField(help_text='modelo (20:00)')
@@ -24,6 +38,7 @@ class Pgm(models.Model):
     contato = models.CharField(max_length=20, help_text='Número com país e DDD, só dígitos. Ex.: 5521987654321')
     ativo = models.BooleanField(default=True)
 
+    
     def save(self, *args, **kwargs):
         nova = self.foto and not self.foto._committed
         super().save(*args, **kwargs)
