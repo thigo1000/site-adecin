@@ -18,11 +18,13 @@ class Pgm(models.Model):
     class Categoria(models.TextChoices):
         MULHERES = 'mulheres', 'Mulheres'
         HOMENS = 'homens', 'Homens'
+        MISTO = 'misto', 'Misto'
         JOVENS = 'jovens', 'Jovens'
         ADOLESCENTES = 'adolescentes', 'Adolescentes'
         JUNIORES = 'juniores', 'Juniores'
 
     FAIXAS_ETARIAS = {
+        Categoria.MISTO: 'Homens e mulheres',
         Categoria.JOVENS: '18 anos ou mais',
         Categoria.ADOLESCENTES: '14 a 17 anos',
         Categoria.JUNIORES: '10 a 13 anos',
