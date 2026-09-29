@@ -20,8 +20,7 @@ def _link_whatsapp(agendamento, membro):
         return None
 
     data = agendamento.data.strftime('%d/%m')
-    hora = agendamento.horario.strftime('%Hh')
-
+    hora = agendamento.horario.strftime('%Hh%M')
     texto = (
         f'Olá, Pastor. Sou {membro.nome} e agendei um horário '
         f'no gabinete para o dia {data}, às {hora}.'

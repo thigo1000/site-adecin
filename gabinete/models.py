@@ -23,24 +23,32 @@ class Janela(models.Model):
         ordering = ['data', 'inicio']
 
     def clean(self):
+        if not (self.data and self.inicio and self.fim):
+            return  
+
         if self.fim <= self.inicio:
             raise ValidationError({'fim': 'O fim precisa ser depois do início.'})
- 
+
+        duracao = datetime.combine(self.data, self.fim) - datetime.combine(self.data, self.inicio)
+        if duracao < timedelta(hours=1):
+            raise ValidationError({'fim': 'A janela precisa ter pelo menos 1 hora.'})
+
         vizinhas = Janela.objects.filter(data=self.data, inicio__lt=self.fim, fim__gt=self.inicio).exclude(pk=self.pk)
- 
+
         if vizinhas.exists():
             raise ValidationError('Já existe uma janela nesse intervalo.')
- 
+
     def horarios(self):
         vagas = []
-        hora = self.inicio.hour
- 
-        while hora + 1 <= self.fim.hour:
-            vagas.append(timezone.datetime.min.time().replace(hour=hora))
-            hora += 1
- 
+        atual = datetime.combine(self.data, self.inicio)
+        fim = datetime.combine(self.data, self.fim)
+
+        while atual + timedelta(hours=1) <= fim:
+            vagas.append(atual.time())
+            atual += timedelta(hours=1)
+
         return vagas
- 
+
     def __str__(self):
         return f'{self.data} · {self.inicio} às {self.fim}'
  
