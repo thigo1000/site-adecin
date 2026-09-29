@@ -36,8 +36,10 @@ class Album(models.Model):
 
     
     def save(self, *args, **kwargs):
+        nova = self.capa and not self.capa._committed
         super().save(*args, **kwargs)
-        redimensionar(self.capa.path, 800, 800)
+        if nova:
+            redimensionar(self.capa.path, 800, 800)
 
     def quantidade_fotos(self):
         return self.fotos.count()
@@ -51,8 +53,10 @@ class Foto(models.Model):
     imagem = models.ImageField(upload_to='fotos/')
 
     def save(self, *args, **kwargs):
+        nova = self.imagem and not self.imagem._committed
         super().save(*args, **kwargs)
-        redimensionar(self.imagem.path, 1600, 1600)
+        if nova:
+            redimensionar(self.imagem.path, 1600, 1600)
         
     def __str__(self):
         return f'Foto de {self.album.nome}'

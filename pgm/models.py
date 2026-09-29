@@ -24,10 +24,11 @@ class Pgm(models.Model):
     contato = models.CharField(max_length=20, help_text='Número com país e DDD, só dígitos. Ex.: 5521987654321')
     ativo = models.BooleanField(default=True)
 
-    
     def save(self, *args, **kwargs):
+        nova = self.foto and not self.foto._committed
         super().save(*args, **kwargs)
-        redimensionar(self.foto.path, 800, 800)
+        if nova:
+            redimensionar(self.foto.path, 800, 800)
 
 
     def __str__(self):

@@ -19,9 +19,10 @@ class Anuncio(models.Model):
         return self.titulo
 
     def save(self, *args, **kwargs):
+        nova = self.imagem and not self.imagem._committed
         super().save(*args, **kwargs)
-        redimensionar(self.imagem.path, 1600, 900)
-
+        if nova:
+            redimensionar(self.imagem.path, 1600, 900)
 
 @receiver(post_delete, sender=Anuncio)
 def anuncio_apagado(sender, instance, **kwargs):
